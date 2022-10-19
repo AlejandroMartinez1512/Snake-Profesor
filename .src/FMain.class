@@ -1,0 +1,68 @@
+' Gambas class file
+
+Private viborita As Serpiente
+
+Private iPasos As Integer
+
+'Hacemos que el juego empiece al pulsar el botón
+Public Sub Jugar_Click()
+
+  
+  viborita = New Serpiente(200, 300, 234543, "W")
+  iPasos = 1
+  Crono.Start()
+  'Es lo mismo mismo mismo que: Crono.Enabled = True
+
+End
+
+'Vemos lo que ocurre conforme avanza el timer
+'Crece la serpiente y se refresca el Drawing Area
+Public Sub Crono_Timer()
+  iPasos = iPasos + 1 
+  
+  If iPasos = 3 Then
+     viborita.crecer()
+     
+     
+     iPasos = 1
+  Else
+     viborita.moverse()
+     
+  Endif
+  
+  
+  If (viborita.estasMuerta(DrawingArea1.W, DrawingArea1.H)) Then
+       Crono.Stop()
+       Message.Info("sacabóloquesedaba")
+  Endif
+  
+  
+  DrawingArea1.Refresh()
+
+End
+
+'El drawing area coge la acción de pintarse de la serpiente
+Public Sub DrawingArea1_Draw()
+
+  If (viborita <> Null) Then 
+     viborita.pintarse(DrawingArea1)
+  Endif
+
+End
+
+'Hacemos que se almacenen las teclas que pulsa el usuario
+
+Public Sub DrawingArea1_KeyPress()
+    If (Key.Text = "W" Or Key.Text = "A" Or Key.Text = "S" Or Key.Text = "D") Then
+      viborita.cambiaDir(Key.Text)
+    Endif
+  
+
+End
+
+Public Sub Form_KeyPress()
+
+    DrawingArea1_KeyPress()
+  
+
+End
